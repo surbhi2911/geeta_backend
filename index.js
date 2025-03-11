@@ -1,39 +1,50 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import bodyParser from "body-parser";
 
 const app = express();
+
+// Middleware
+app.use(express.json());
 app.use(cors());
-app.use(bodyParser.json());
 
-// Connect to MongoDB
-mongoose.connect("mongodb+srv://surbhipansuriya772:ROxZBDOlzQjlF9iD@solardb.3lyp9.mongodb.net/Geeta", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+// MongoDB Connection
+mongoose
+    .connect("mongodb+srv://surbhipansuriya772:ROxZBDOlzQjlF9iD@solardb.3lyp9.mongodb.net/")
+    .then(() => console.log("MongoDB Connected"))
+    .catch((err) => console.log("DB Connection Error:", err));
 
-// Define Schema
-const FormSchema = new mongoose.Schema({
+// Schema & Model
+const ItemSchema = new mongoose.Schema({
     name: String,
-    email: String,
-    phone: String,
+    description: String,
 });
 
-// Create Model
-const FormModel = mongoose.model("Data", FormSchema);
+const Item = mongoose.model("Item", ItemSchema);
 
-// API Route to Handle Form Submission
-app.post("/api/form", async (req, res) => {
+// Create API (POST)
+app.post("/", async (req, res) => {
     try {
-        const newForm = new FormModel(req.body);
-        await newForm.save();
-        res.status(201).json({ message: "Form submitted successfully!" });
+        const newItem = new Item(req.body);
+        const savedItem = await newItem.save();
+        res.status(201).json(savedItem);
     } catch (error) {
-        res.status(500).json({ error: "Failed to submit form" });
-        console.log(error);
-
+        res.status(500).json({ error: "Error saving item" });
     }
 });
 
+// Get API (GET)
+app.get("/", async (req, res) => {
+    try {
+        const items = await Item.find();
+        res.json(items);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching items" });
+    }
+});
 
+// Start Server
+const PORT = 5000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
