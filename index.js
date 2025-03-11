@@ -16,8 +16,11 @@ mongoose
 
 // Schema & Model
 const ItemSchema = new mongoose.Schema({
-    name: String,
-    description: String,
+    name:String,
+    email:String,
+    phnumber:Number,
+    address:String,
+    area:String,
 });
 
 const Item = mongoose.model("Item", ItemSchema);
@@ -44,7 +47,7 @@ app.get("/", async (req, res) => {
 });
 
 // Start Server
-const PORT = 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// const PORT = 5000;
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+// });
