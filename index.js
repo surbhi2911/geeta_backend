@@ -4,49 +4,37 @@ import cors from "cors";
 import bodyParser from "body-parser";
 
 const app = express();
-
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/formDB", {
+mongoose.connect("mongodb://127.0.0.1:27017/formdb", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
 
-const db = mongoose.connection;
-db.once("open", () => console.log("Connected to MongoDB"));
-
-// Define Schema & Model
-const formSchema = new mongoose.Schema({
+// Define Schema
+const FormSchema = new mongoose.Schema({
     name: String,
     email: String,
-    phone: String,
+    message: String,
 });
 
-const Form = mongoose.model("Form", formSchema);
+// Create Model
+const FormModel = mongoose.model("Form", FormSchema);
 
-// API to save form data
-app.post("/submit", async (req, res) => {
+// API Route to Handle Form Submission
+app.post("/api/form", async (req, res) => {
     try {
-        const newData = new Form(req.body);
-        await newData.save();
-        res.status(201).json({ message: "Data saved successfully" });
+        const newForm = new FormModel(req.body);
+        await newForm.save();
+        res.status(201).json({ message: "Form submitted successfully!" });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: "Failed to submit form" });
     }
 });
 
-// API to fetch all form data
-app.get("/data", async (req, res) => {
-    try {
-        const data = await Form.find();
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+// Start Server
+app.listen(8000, () => {
+    console.log("Server running on http://localhost:5000");
 });
-
-// Start server
-app.listen(5000, () => console.log("Server running on port 5000"));
