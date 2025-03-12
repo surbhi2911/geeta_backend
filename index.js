@@ -10,7 +10,7 @@ app.use(cors());
 
 // MongoDB Connection
 mongoose
-    .connect("mongodb+srv://surbhipansuriya772:ROxZBDOlzQjlF9iD@solardb.3lyp9.mongodb.net/")
+    .connect("mongodb+srv://surbhipansuriya772:ROxZBDOlzQjlF9iD@solardb.3lyp9.mongodb.net/Geeta")
     .then(() => console.log("MongoDB Connected"))
     .catch((err) => console.log("DB Connection Error:", err));
 
@@ -23,7 +23,7 @@ const ItemSchema = new mongoose.Schema({
     area:String,
 });
 
-const Item = mongoose.model("Item", ItemSchema);
+const Item = mongoose.model("data", ItemSchema);
 
 // Create API (POST)
 app.post("/", async (req, res) => {
