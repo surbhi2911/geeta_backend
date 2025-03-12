@@ -16,11 +16,15 @@ mongoose
 
 // Schema & Model
 const ItemSchema = new mongoose.Schema({
-    name:String,
-    email:String,
-    phnumber:Number,
-    address:String,
-    area:String,
+    name: String,
+    email: { type: String, unique: true },
+    phnumber: { type: Number, unique: true },
+    area: String,
+    numberOfPass: {
+        type: Number,
+        enum: [1, 2, 3, 4, 5],
+        default: 1
+    }
 });
 
 const Item = mongoose.model("data", ItemSchema);
