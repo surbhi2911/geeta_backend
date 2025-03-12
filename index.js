@@ -20,7 +20,7 @@ const ItemSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     phnumber: { type: Number, unique: true },
     area: String,
-    numberOfPass: {
+    pass: {
         type: Number,
         enum: [1, 2, 3, 4, 5],
         default: 1
