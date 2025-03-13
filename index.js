@@ -31,7 +31,7 @@ app.post("/", async (req, res) => {
         const { phnumber } = req.body;
 
         // Check if email or phone number already exists
-        const existingUser = await Item.findOne({ $or: [{ phnumber }] });
+        const existingUser = await Item.findOne({ $or: [ { phnumber }] });
 
         if (existingUser) {
             if (existingUser.phnumber === phnumber) {
@@ -59,16 +59,6 @@ app.get("/", async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Error fetching items" });
     }
-});
-
-app.get("/check-phnumber", async (req, res) => {
-    const { phnumber } = req.query;
-    const existingUser = await User.findOne({ phnumber });
-
-    if (existingUser) {
-        return res.json({ exists: true });
-    }
-    res.json({ exists: false });
 });
 
 // Start Server
