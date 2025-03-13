@@ -10,11 +10,7 @@ app.use(cors());
 
 // MongoDB Connection
 mongoose
-    .connect("mongodb+srv://surbhipansuriya772:ROxZBDOlzQjlF9iD@solardb.3lyp9.mongodb.net/Geeta", {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,  // Ensure indexes are created
-    })
+    .connect("mongodb+srv://surbhipansuriya772:ROxZBDOlzQjlF9iD@solardb.3lyp9.mongodb.net/Geeta")
     .then(() => console.log("MongoDB Connected"))
     .catch((err) => console.log("DB Connection Error:", err));
 
@@ -32,10 +28,10 @@ const Item = mongoose.model("data", ItemSchema);
 // Create API (POST) with Unique Validation
 app.post("/", async (req, res) => {
     try {
-        const { email, phnumber } = req.body;
+        const { phnumber } = req.body;
 
         // Check if email or phone number already exists
-        const existingUser = await Item.findOne({ $or: [{ email }, { phnumber }] });
+        const existingUser = await Item.findOne({ $or: [{ phnumber }] });
 
         if (existingUser) {
             if (existingUser.phnumber === phnumber) {
