@@ -61,6 +61,16 @@ app.get("/", async (req, res) => {
     }
 });
 
+app.get("/check-phnumber", async (req, res) => {
+    const { phnumber } = req.query;
+    const existingUser = await User.findOne({ phnumber });
+
+    if (existingUser) {
+        return res.json({ exists: true });
+    }
+    res.json({ exists: false });
+});
+
 // Start Server
 const PORT = 4000;
 app.listen(PORT, () => {
