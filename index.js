@@ -21,7 +21,7 @@ const ItemSchema = new mongoose.Schema({
     phnumber: { type: Number, required: true, unique: true },
     area: { type: String, required: true },
     pass: { type: Number, enum: [1, 2, 3, 4, 5], default: 1 }
-});
+}, { timestamps: true });
 
 const Item = mongoose.model("data", ItemSchema);
 
@@ -31,7 +31,7 @@ app.post("/", async (req, res) => {
         const { phnumber } = req.body;
 
         // Check if email or phone number already exists
-        const existingUser = await Item.findOne({ $or: [ { phnumber }] });
+        const existingUser = await Item.findOne({ $or: [{ phnumber }] });
 
         if (existingUser) {
             if (existingUser.phnumber === phnumber) {
@@ -46,7 +46,7 @@ app.post("/", async (req, res) => {
     } catch (error) {
         if (error.code === 11000) {
             return res.status(400).json({ error: "Duplicate entry found." });
-         } 
+        }
         res.status(500).json({ error: "Error saving item" });
     }
 });
