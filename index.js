@@ -46,7 +46,7 @@ app.post("/", async (req, res) => {
     } catch (error) {
         if (error.code === 11000) {
             return res.status(400).json({ error: "Duplicate entry found." });
-        }
+         } 
         res.status(500).json({ error: "Error saving item" });
     }
 });
